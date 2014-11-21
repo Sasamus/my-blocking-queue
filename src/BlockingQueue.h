@@ -10,7 +10,7 @@
 #ifndef BLOCKINGQUEUE_H_
 #define BLOCKINGQUEUE_H_
 
-#include <vector>
+#include <queue>
 #include <mutex>
 #include <condition_variable>
 
@@ -19,7 +19,7 @@ class BlockingQueue {
 
 private:
 	//A queue
-	std::vector<T> m_queue = new std::vector<T>();
+	std::queue<T> m_queue = new std::queue<T>();
 
 	//The size of the queue
 	int m_size;
@@ -37,11 +37,11 @@ public:
 
 	T Take();
 	//Pre:
-	//Post: Returns element at the start of m_queue
+	//Post: Returns the element at the start of m_queue
 
-	void Put();
+	void Put(const T &item);
 	//Pre:
-	//Post: Puts and element at the back of m_queue
+	//Post: Adds an element at the back of m_queue
 };
 
 #endif /* BLOCKINGQUEUE_H_ */
