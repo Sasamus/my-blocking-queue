@@ -8,12 +8,15 @@
 
 #include "BlockingQueue.h"
 
-BlockingQueue::BlockingQueue() {
-	// TODO Auto-generated constructor stub
+template <class T>
+BlockingQueue<T>::BlockingQueue(int size)
+: m_size(size){
+
 
 }
 
-BlockingQueue::~BlockingQueue() {
-	// TODO Auto-generated destructor stub
+template <class T>
+BlockingQueue<T>::~BlockingQueue() {
+
 }
 

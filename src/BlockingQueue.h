@@ -16,10 +16,11 @@ template <class T>
 class BlockingQueue {
 
 private:
-	std::vector<T> queue = new std::vector<T>();
+	std::vector<T> m_queue = new std::vector<T>();
+	int m_size;
 
 public:
-	BlockingQueue();
+	BlockingQueue(int size);
 	virtual ~BlockingQueue();
 };
 
