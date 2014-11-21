@@ -10,7 +10,14 @@
 #ifndef BLOCKINGQUEUE_H_
 #define BLOCKINGQUEUE_H_
 
+#include <vector>
+
+template <class T>
 class BlockingQueue {
+
+private:
+	std::vector<T> queue = new std::vector<T>();
+
 public:
 	BlockingQueue();
 	virtual ~BlockingQueue();
