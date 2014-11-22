@@ -22,13 +22,13 @@ private:
 	std::queue<T> m_queue = new std::queue<T>();
 
 	//The size of the queue
-	int m_size;
+	int mSize;
 
 	//A mutex to lock the critical sections
-	std::mutex m_mutex;
+	static std::mutex mMutex;
 
 	//A condition variable to lock the critical sections
-	std::condition_variable m_condition_variable;
+	static std::condition_variable mConditionVariable;
 
 
 public:
@@ -39,7 +39,7 @@ public:
 	//Pre:
 	//Post: Returns the element at the start of m_queue
 
-	void Put(const T &item);
+	void Put(const T &element);
 	//Pre:
 	//Post: Adds an element at the back of m_queue
 };

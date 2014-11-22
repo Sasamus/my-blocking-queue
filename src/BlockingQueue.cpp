@@ -10,7 +10,7 @@
 
 template <class T>
 BlockingQueue<T>::BlockingQueue(int size)
-: m_size(size){
+: mSize(size){
 
 
 }
@@ -24,13 +24,13 @@ template <class T>
 T BlockingQueue<T>::Take(){
 
 	//Creates an unique_lock with m_mutex
-	std::unique_lock<std::mutex> lock(m_mutex);
+	std::unique_lock<std::mutex> lock(mMutex);
 
 	//While m_queue is empty
 	while (m_queue.empty())
 	{
 		//Wait m_condition_variable with lock
-		m_condition_variable.wait(lock);
+		mConditionVariable.wait(lock);
 	}
 
 	//Get the first element int m_queue
@@ -44,18 +44,18 @@ T BlockingQueue<T>::Take(){
 }
 
 template <class T>
-void BlockingQueue<T>::Put(const T &item){
+void BlockingQueue<T>::Put(const T &element){
 
 	//Creates an unique_lock with m_mutex
-	std::unique_lock<std::mutex> lock(m_mutex);
+	std::unique_lock<std::mutex> lock(mMutex);
 
-	//Add item to the end of m_queue
-	m_queue.push(item);
+	//Add element to the end of m_queue
+	m_queue.push(element);
 
 	//Unlock lock
 	lock.unlock();
 
 	//Notify one thread waiting with m_condition_variable
-	m_condition_variable.notify_one();
+	mConditionVariable.notify_one();
 
 }
