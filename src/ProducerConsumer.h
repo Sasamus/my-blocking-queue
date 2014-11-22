@@ -29,6 +29,10 @@ private:
 public:
 	ProducerConsumer();
 	~ProducerConsumer();
+
+	void Run();
+	//Pre:
+	//Post: Creates threads and their shared object
 };
 
 #endif /* PRODUCERCONSUMER_H_ */

@@ -8,21 +8,15 @@
 
 #include "ProducerConsumer.h"
 
-ProducerConsumer::ProducerConsumer() {
+void ProducerConsumer::Run(){
 
 	//Create a BlockingQueue
 	BlockingQueue<int> sharedQueue =
 	new BlockingQueue<int>(Q_SIZE);
 
 	//Create Producer and Consumer threads
-	producerThread = new std::thread(new Producer(sharedQueue,N_ELEM));
-	consumerThread = new std::thread(new Consumer(sharedQueue,N_ELEM));
-	}
-
-
-}
-
-ProducerConsumer::~ProducerConsumer() {
+	producerThread = new std::thread(new Producer(sharedQueue, N_ELEM));
+	consumerThread = new std::thread(new Consumer(sharedQueue, N_ELEM));
 
 }
 

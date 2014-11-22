@@ -12,8 +12,12 @@ using namespace std;
 
 int main()
 {
+	//Create a PruducerConsumer
+	ProducerConsumer producerconsumer = new ProducerConsumer();
 
+	//Call its Run() method
+	producerconsumer.Run();
 
-
+	//Return 0
     return 0;
 }
