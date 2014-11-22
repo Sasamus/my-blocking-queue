@@ -1,33 +1,32 @@
 //============================================================================
-// Name        : Producer.cpp
+// Name        : Consumer.cpp
 // Author      : Albin Engström
 // Created     : 2014-11-22
 // Modified    : 2014-11-22
-// Description : Implementation of class Producer
+// Description : Implementation of class Consumer
 //============================================================================
 
-#include "Producer.h"
+#include "Consumer.h"
 
-Producer::Producer(BlockingQueue<int> blockingQueue, int nrElements)
+Consumer::Consumer(BlockingQueue<int> blockingQueue, int nrElements)
 : mSharedBlockingQueue(blockingQueue), mNrElements(nrElements){
 
 	Run();
 }
 
-Producer::~Producer(){
+Consumer::~Consumer(){
 }
 
-
-void Producer::Run(){
+void Consumer::Run(){
 
 	for(int i=0; i < mNrElements; i++){
 		try {
 
-			//Calls mSharedBlockingQueue's Put() with i
-			mSharedBlockingQueue.Put(i);
+			//Calls mSharedBlockingQueue's Take()
+			int value = mSharedBlockingQueue.Take();
 
 			//Print that i was produced
-			std::cout << "Produced: " << i << std::endl;
+			std::cout << "Consumed: " << value << std::endl;
 
 		} catch (std::exception &e) {
 			std::cout << e.what() << std::endl;

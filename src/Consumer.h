@@ -1,21 +1,21 @@
 //============================================================================
-// Name        : Producer.h
+// Name        : Consumer.h
 // Author      : Albin Engström
 // Created     : 2014-11-22
 // Modified    : 2014-11-22
-// Description : Declaration of class Producer
-// Purpose	   : Produce numbers and add them to mSharedBlockingQueue
+// Description : Declaration of class Consumer
+// Purpose	   : Consume numbers from mSharedBlockingQueue
 //============================================================================
 
-#ifndef PRODUCER_H_
-#define PRODUCER_H_
+#ifndef CONSUMER_H_
+#define CONSUMER_H_
 
 #include "BlockingQueue.h"
 
 #include <iostream>
 #include <exception>
 
-class Producer {
+class Consumer {
 private:
 	//Variable to hold the shared BlockingQueue
 	BlockingQueue<int> mSharedBlockingQueue;
@@ -24,12 +24,12 @@ private:
 	int mNrElements;
 
 public:
-	Producer(BlockingQueue<int> blockingQueue, int nrElements);
-	~Producer();
+	Consumer(BlockingQueue<int> blockingQueue, int nrElements);
+	~Consumer();
 
 	void Run();
 	//Pre:
-	//Post: Produce numbers and add them to mSharedBlockingQueue
+	//Post: Consume numbers from mSharedBlockingQueue
 };
 
-#endif /* PRODUCER_H_ */
+#endif /* CONSUMER_H_ */

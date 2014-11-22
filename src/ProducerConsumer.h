@@ -11,7 +11,9 @@
 #ifndef PRODUCERCONSUMER_H_
 #define PRODUCERCONSUMER_H_
 
-#include <BlockingQueue.h>
+#include "BlockingQueue.h"
+#include "Producer.h"
+#include "Consumer.h"
 
 #include <thread>
 
@@ -24,7 +26,7 @@ private:
 	const int Q_SIZE = 3;
 
 	//Threads
-	std::thread producerThread = NULL, consumerThread = NULL;
+	std::thread *producerThread, *consumerThread;
 
 public:
 	ProducerConsumer();

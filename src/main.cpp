@@ -7,16 +7,17 @@
 // Purpose      : Start the program
 //=============================================================
 
+#include "ProducerConsumer.h"
 
 using namespace std;
 
 int main()
 {
 	//Create a PruducerConsumer
-	ProducerConsumer producerconsumer = new ProducerConsumer();
+	ProducerConsumer *producerconsumer = new ProducerConsumer();
 
 	//Call its Run() method
-	producerconsumer.Run();
+	producerconsumer->Run();
 
 	//Return 0
     return 0;
