@@ -23,9 +23,14 @@ void ProducerConsumer::Run(){
 	BlockingQueue<int> *sharedQueue =
 	new BlockingQueue<int>(Q_SIZE);
 
+	std::mutex *coutMutex = new std::mutex;
+
 	//Create Producer and Consumer threads
-	producerThread = new std::thread(&Producer::Run, Producer(sharedQueue, N_ELEM));
-	consumerThread = new std::thread(&Consumer::Run, Consumer(sharedQueue, N_ELEM));
+	producerThread = new std::thread(&Producer::Run, Producer(sharedQueue, N_ELEM, coutMutex));
+	consumerThread = new std::thread(&Consumer::Run, Consumer(sharedQueue, N_ELEM, coutMutex));
+
+	producerThread->join();
+	consumerThread->join();
 
 }
 

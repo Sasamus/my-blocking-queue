@@ -16,6 +16,7 @@
 #include "Consumer.h"
 
 #include <thread>
+#include <mutex>
 
 class ProducerConsumer {
 private:

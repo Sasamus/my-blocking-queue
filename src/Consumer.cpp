@@ -8,8 +8,8 @@
 
 #include "Consumer.h"
 
-Consumer::Consumer(BlockingQueue<int> *blockingQueue, int nrElements)
-: mSharedBlockingQueue(blockingQueue), mNrElements(nrElements){
+Consumer::Consumer(BlockingQueue<int> *blockingQueue, int nrElements, std::mutex *coutMutex)
+: mSharedBlockingQueue(blockingQueue), mNrElements(nrElements), mCoutMutex(coutMutex){
 
 }
 
@@ -25,7 +25,9 @@ void Consumer::Run(){
 			int value = mSharedBlockingQueue->Take();
 
 			//Print that i was produced
+			mCoutMutex->lock();
 			std::cout << "Consumed: " << value << std::endl;
+			mCoutMutex->unlock();
 
 		} catch (std::exception &e) {
 			std::cout << e.what() << std::endl;

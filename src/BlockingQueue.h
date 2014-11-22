@@ -19,7 +19,7 @@ class BlockingQueue {
 
 private:
 	//A queue
-	std::queue<T> *m_queue = new std::queue<T>();
+	std::queue<T> *mQueue = new std::queue<T>();
 
 	//The size of the queue
 	int mSize;
@@ -54,27 +54,27 @@ BlockingQueue<T>::BlockingQueue(int size)
 
 template <class T>
 BlockingQueue<T>::~BlockingQueue() {
- delete m_queue;
+ delete mQueue;
 }
 
 template <class T>
 T BlockingQueue<T>::Take(){
 
-	//Creates an unique_lock with m_mutex
+	//Creates an unique_lock with mMutex
 	std::unique_lock<std::mutex> lock(mMutex);
 
-	//While m_queue is empty
-	while (m_queue->empty())
+	//While mQueue is empty
+	while (mQueue->empty())
 	{
-		//Wait m_condition_variable with lock
+		//Wait mConditionVariable with lock
 		mConditionVariable.wait(lock);
 	}
 
-	//Get the first element int m_queue
-	T element = m_queue->front();
+	//Get the first element int mQueue
+	T element = mQueue->front();
 
-	//Remove the first element i m_queue
-	m_queue->pop();
+	//Remove the first element i mQueue
+	mQueue->pop();
 
 	//Return element
 	return element;
@@ -83,16 +83,23 @@ T BlockingQueue<T>::Take(){
 template <class T>
 void BlockingQueue<T>::Put(const T &element){
 
-	//Creates an unique_lock with m_mutex
+	//Creates an unique_lock with mMutex
 	std::unique_lock<std::mutex> lock(mMutex);
 
+	//While mQueue is full
+	while (mQueue->size() == (unsigned)mSize)
+	{
+		//Wait mConditionVariable with lock
+		mConditionVariable.wait(lock);
+	}
+
 	//Add element to the end of m_queue
-	m_queue->push(element);
+	mQueue->push(element);
 
 	//Unlock lock
 	lock.unlock();
 
-	//Notify one thread waiting with m_condition_variable
+	//Notify one thread waiting with mConditionVariable
 	mConditionVariable.notify_one();
 
 }

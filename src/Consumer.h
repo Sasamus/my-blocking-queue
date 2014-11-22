@@ -14,6 +14,7 @@
 
 #include <iostream>
 #include <exception>
+#include <mutex>
 
 class Consumer {
 private:
@@ -23,8 +24,11 @@ private:
 	//Nr of elements to handle
 	int mNrElements;
 
+	//Mutex to keep cout from interleaving
+	std::mutex *mCoutMutex;
+
 public:
-	Consumer(BlockingQueue<int> *blockingQueue, int nrElements);
+	Consumer(BlockingQueue<int> *blockingQueue, int nrElements, std::mutex *coutMutex);
 	~Consumer();
 
 	void Run();

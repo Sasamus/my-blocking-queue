@@ -8,8 +8,8 @@
 
 #include "Producer.h"
 
-Producer::Producer(BlockingQueue<int> *blockingQueue, int nrElements)
-: mSharedBlockingQueue(blockingQueue), mNrElements(nrElements){
+Producer::Producer(BlockingQueue<int> *blockingQueue, int nrElements, std::mutex *coutMutex)
+: mSharedBlockingQueue(blockingQueue), mNrElements(nrElements), mCoutMutex(coutMutex){
 
 }
 
@@ -26,7 +26,9 @@ void Producer::Run(){
 			mSharedBlockingQueue->Put(i);
 
 			//Print that i was produced
+			mCoutMutex->lock();
 			std::cout << "Produced: " << i << std::endl;
+			mCoutMutex->unlock();
 
 		} catch (std::exception &e) {
 			std::cout << e.what() << std::endl;
