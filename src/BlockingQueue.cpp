@@ -26,7 +26,7 @@ T BlockingQueue<T>::Take(){
 	//Creates an unique_lock with m_mutex
 	std::unique_lock<std::mutex> lock(m_mutex);
 
-	//While m:queue is empty
+	//While m_queue is empty
 	while (m_queue.empty())
 	{
 		//Wait m_condition_variable with lock

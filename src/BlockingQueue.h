@@ -33,7 +33,7 @@ private:
 
 public:
 	BlockingQueue(int size);
-	virtual ~BlockingQueue();
+	~BlockingQueue();
 
 	T Take();
 	//Pre:
