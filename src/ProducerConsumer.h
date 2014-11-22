@@ -26,7 +26,8 @@ private:
 	const int Q_SIZE = 3;
 
 	//Threads
-	std::thread *producerThread, *consumerThread;
+	std::thread *producerThread;
+	std::thread *consumerThread;
 
 public:
 	ProducerConsumer();

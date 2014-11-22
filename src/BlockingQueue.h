@@ -25,10 +25,10 @@ private:
 	int mSize;
 
 	//A mutex to lock the critical sections
-	static std::mutex mMutex;
+	std::mutex mMutex;
 
 	//A condition variable to lock the critical sections
-	static std::condition_variable mConditionVariable;
+	std::condition_variable mConditionVariable;
 
 
 public:
@@ -49,7 +49,6 @@ public:
 template <class T>
 BlockingQueue<T>::BlockingQueue(int size)
 : mSize(size){
-
 
 }
 

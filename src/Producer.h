@@ -18,13 +18,13 @@
 class Producer {
 private:
 	//Variable to hold the shared BlockingQueue
-	BlockingQueue<int> mSharedBlockingQueue;
+	BlockingQueue<int> *mSharedBlockingQueue;
 
 	//Nr of elements to handle
 	int mNrElements;
 
 public:
-	Producer(BlockingQueue<int> blockingQueue, int nrElements);
+	Producer(BlockingQueue<int> *blockingQueue, int nrElements);
 	~Producer();
 
 	void Run();

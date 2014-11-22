@@ -8,10 +8,9 @@
 
 #include "Producer.h"
 
-Producer::Producer(BlockingQueue<int> blockingQueue, int nrElements)
+Producer::Producer(BlockingQueue<int> *blockingQueue, int nrElements)
 : mSharedBlockingQueue(blockingQueue), mNrElements(nrElements){
 
-	Run();
 }
 
 Producer::~Producer(){
@@ -24,7 +23,7 @@ void Producer::Run(){
 		try {
 
 			//Calls mSharedBlockingQueue's Put() with i
-			mSharedBlockingQueue.Put(i);
+			mSharedBlockingQueue->Put(i);
 
 			//Print that i was produced
 			std::cout << "Produced: " << i << std::endl;

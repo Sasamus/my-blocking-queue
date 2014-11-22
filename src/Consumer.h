@@ -18,13 +18,13 @@
 class Consumer {
 private:
 	//Variable to hold the shared BlockingQueue
-	BlockingQueue<int> mSharedBlockingQueue;
+	BlockingQueue<int> *mSharedBlockingQueue;
 
 	//Nr of elements to handle
 	int mNrElements;
 
 public:
-	Consumer(BlockingQueue<int> blockingQueue, int nrElements);
+	Consumer(BlockingQueue<int> *blockingQueue, int nrElements);
 	~Consumer();
 
 	void Run();

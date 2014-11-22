@@ -8,10 +8,9 @@
 
 #include "Consumer.h"
 
-Consumer::Consumer(BlockingQueue<int> blockingQueue, int nrElements)
+Consumer::Consumer(BlockingQueue<int> *blockingQueue, int nrElements)
 : mSharedBlockingQueue(blockingQueue), mNrElements(nrElements){
 
-	Run();
 }
 
 Consumer::~Consumer(){
@@ -23,7 +22,7 @@ void Consumer::Run(){
 		try {
 
 			//Calls mSharedBlockingQueue's Take()
-			int value = mSharedBlockingQueue.Take();
+			int value = mSharedBlockingQueue->Take();
 
 			//Print that i was produced
 			std::cout << "Consumed: " << value << std::endl;
