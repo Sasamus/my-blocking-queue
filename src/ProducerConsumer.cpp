@@ -29,8 +29,12 @@ void ProducerConsumer::Run(){
 	producerThread = new std::thread(&Producer::Run, Producer(sharedQueue, N_ELEM, coutMutex));
 	consumerThread = new std::thread(&Consumer::Run, Consumer(sharedQueue, N_ELEM, coutMutex));
 
+	//Join threads
 	producerThread->join();
 	consumerThread->join();
 
+	//Delete stuff
+	delete sharedQueue;
+	delete coutMutex;
 }
 

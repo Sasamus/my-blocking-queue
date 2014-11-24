@@ -19,6 +19,9 @@ int main()
 	//Call its Run() method
 	producerconsumer->Run();
 
+	//Delete producerconsumer
+	delete producerconsumer;
+
 	//Return 0
     return 0;
 }

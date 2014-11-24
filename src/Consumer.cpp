@@ -24,12 +24,12 @@ void Consumer::Run(){
 			//Calls mSharedBlockingQueue's Take()
 			int value = mSharedBlockingQueue->Take();
 
-			//Print that i was produced
-			mCoutMutex->lock();
+			//Print that i was consumed
+			std::lock_guard<std::mutex> lock(*mCoutMutex);
 			std::cout << "Consumed: " << value << std::endl;
-			mCoutMutex->unlock();
 
 		} catch (std::exception &e) {
+			std::lock_guard<std::mutex> lock(*mCoutMutex);
 			std::cout << e.what() << std::endl;
 		}
 	}

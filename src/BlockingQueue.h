@@ -13,6 +13,14 @@
 #include <queue>
 #include <mutex>
 #include <condition_variable>
+#include <iostream>
+
+/*
+ * My implementation of a blocking queue is based around normal queue
+ * with FIFO functionality and added thread-safety, size management
+ * and lastly blocking implemented with mutex's, condition_variable's
+ * and unique_locks.
+ */
 
 template <class T>
 class BlockingQueue {
@@ -24,11 +32,18 @@ private:
 	//The size of the queue
 	int mSize;
 
-	//A mutex to lock the critical sections
-	std::mutex mMutex;
+	//Mutex to lock the critical sections
+	std::mutex mPutMutex;
+	std::mutex mTakeMutex;
+	std::mutex AccessMutex;
 
-	//A condition variable to lock the critical sections
-	std::condition_variable mConditionVariable;
+	//Condition variable's to lock the critical sections
+	std::condition_variable mPutConditionVariable;
+	std::condition_variable mTakeConditionVariable;
+
+	//Unique_locks's to lock the critical sections
+	std::unique_lock<std::mutex> takeLock;
+	std::unique_lock<std::mutex> putLock;
 
 
 public:
@@ -50,6 +65,12 @@ template <class T>
 BlockingQueue<T>::BlockingQueue(int size)
 : mSize(size){
 
+	//Creates an unique_lock with mPutMutex
+	putLock = std::unique_lock<std::mutex>(mPutMutex);
+
+	//Creates an unique_lock with mTakeMutex
+	takeLock = std::unique_lock<std::mutex>(mTakeMutex);
+
 }
 
 template <class T>
@@ -60,21 +81,23 @@ BlockingQueue<T>::~BlockingQueue() {
 template <class T>
 T BlockingQueue<T>::Take(){
 
-	//Creates an unique_lock with mMutex
-	std::unique_lock<std::mutex> lock(mMutex);
-
 	//While mQueue is empty
 	while (mQueue->empty())
 	{
-		//Wait mConditionVariable with lock
-		mConditionVariable.wait(lock);
+		//Wait mTakeConditionVariable with takeLock
+		mTakeConditionVariable.wait(takeLock);
 	}
 
 	//Get the first element int mQueue
 	T element = mQueue->front();
 
 	//Remove the first element i mQueue
+	AccessMutex.lock();
 	mQueue->pop();
+	AccessMutex.unlock();
+
+	//Notify one thread waiting with mPutConditionVariable
+	mPutConditionVariable.notify_one();
 
 	//Return element
 	return element;
@@ -83,24 +106,20 @@ T BlockingQueue<T>::Take(){
 template <class T>
 void BlockingQueue<T>::Put(const T &element){
 
-	//Creates an unique_lock with mMutex
-	std::unique_lock<std::mutex> lock(mMutex);
-
 	//While mQueue is full
 	while (mQueue->size() == (unsigned)mSize)
 	{
-		//Wait mConditionVariable with lock
-		mConditionVariable.wait(lock);
+		//Wait mPutConditionVariable with putLock
+		mPutConditionVariable.wait(putLock);
 	}
 
 	//Add element to the end of m_queue
+	AccessMutex.lock();
 	mQueue->push(element);
+	AccessMutex.unlock();
 
-	//Unlock lock
-	lock.unlock();
-
-	//Notify one thread waiting with mConditionVariable
-	mConditionVariable.notify_one();
+	//Notify one thread waiting with mTakeConditionVariable
+	mTakeConditionVariable.notify_one();
 
 }
 
