@@ -33,8 +33,8 @@ private:
 	int mSize;
 
 	//Mutex to lock the critical sections
-	//std::mutex mPutMutex;
-	//std::mutex mTakeMutex;
+	std::mutex mPutMutex;
+	std::mutex mTakeMutex;
 	std::mutex mMutex;
 
 	//Condition variable's to lock the critical sections
@@ -42,8 +42,8 @@ private:
 	std::condition_variable mTakeConditionVariable;
 
 	//Unique_locks's to lock the critical sections
-	//std::unique_lock<std::mutex> takeLock;
-	//std::unique_lock<std::mutex> putLock;
+	std::unique_lock<std::mutex> takeLock;
+	std::unique_lock<std::mutex> putLock;
 
 
 public:
@@ -66,10 +66,10 @@ BlockingQueue<T>::BlockingQueue(int size)
 : mSize(size){
 
 	//Creates an unique_lock with mPutMutex
-	//putLock = std::unique_lock<std::mutex>(mPutMutex);
+	putLock = std::unique_lock<std::mutex>(mPutMutex);
 
 	//Creates an unique_lock with mTakeMutex
-	//takeLock = std::unique_lock<std::mutex>(mTakeMutex);
+	takeLock = std::unique_lock<std::mutex>(mTakeMutex);
 
 }
 
@@ -81,20 +81,20 @@ BlockingQueue<T>::~BlockingQueue() {
 template <class T>
 T BlockingQueue<T>::Take(){
 
-	std::unique_lock<std::mutex> lock = std::unique_lock<std::mutex>(mMutex);
-
 	//While mQueue is empty
 	while (mQueue->empty())
 	{
 		//Wait mTakeConditionVariable with takeLock
-		mTakeConditionVariable.wait(lock);
+		mTakeConditionVariable.wait(takeLock);
 	}
 
 	//Get the first element int mQueue
 	T element = mQueue->front();
 
 	//Remove the first element i mQueue
+	mMutex.lock();
 	mQueue->pop();
+	mMutex.unlock();
 
 	//Notify one thread waiting with mPutConditionVariable
 	mPutConditionVariable.notify_one();
@@ -106,17 +106,17 @@ T BlockingQueue<T>::Take(){
 template <class T>
 void BlockingQueue<T>::Put(const T &element){
 
-	std::unique_lock<std::mutex> lock = std::unique_lock<std::mutex>(mMutex);
-
 	//While mQueue is full
 	while (mQueue->size() == (unsigned)mSize)
 	{
 		//Wait mPutConditionVariable with putLock
-		mPutConditionVariable.wait(lock);
+		mPutConditionVariable.wait(putLock);
 	}
 
 	//Add element to the end of m_queue
+	mMutex.lock();
 	mQueue->push(element);
+	mMutex.unlock();
 
 	//Notify one thread waiting with mTakeConditionVariable
 	mTakeConditionVariable.notify_one();
