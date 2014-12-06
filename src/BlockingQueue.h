@@ -33,18 +33,11 @@ private:
 	int mSize;
 
 	//Mutex to lock the critical sections
-	//std::mutex mPutMutex;
-	//std::mutex mTakeMutex;
 	std::mutex mMutex;
 
 	//Condition variable's to lock the critical sections
 	std::condition_variable mPutConditionVariable;
 	std::condition_variable mTakeConditionVariable;
-
-	//Unique_locks's to lock the critical sections
-	//std::unique_lock<std::mutex> takeLock;
-	//std::unique_lock<std::mutex> putLock;
-
 
 public:
 	BlockingQueue(int size);
@@ -64,12 +57,6 @@ public:
 template <class T>
 BlockingQueue<T>::BlockingQueue(int size)
 : mSize(size){
-
-	//Creates an unique_lock with mPutMutex
-	//putLock = std::unique_lock<std::mutex>(mPutMutex);
-
-	//Creates an unique_lock with mTakeMutex
-	//takeLock = std::unique_lock<std::mutex>(mTakeMutex);
 
 }
 
